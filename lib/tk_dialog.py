@@ -1,5 +1,4 @@
 import tkinter
-from lib.game_launch import launchGame
 
 class Application(tkinter.Frame):
     def __init__(self, master=None):
@@ -30,5 +29,4 @@ def start():
     root = tkinter.Tk()
     app = Application(root)
     app.mainloop()
-    if app.launchGame:
-        launchGame()
+    return app.launchGame
