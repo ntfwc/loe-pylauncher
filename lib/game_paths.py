@@ -1,4 +1,4 @@
 import os.path
 
-def getResourcesPath(installPath):
-    return os.path.join(installPath, "loe_Data", "resources.assets")
+def getResourcesPath(gameDirectory):
+    return os.path.join(gameDirectory, "loe_Data", "resources.assets")
