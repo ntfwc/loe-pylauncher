@@ -1,4 +1,5 @@
 import tkinter
+import tkinter.filedialog
 
 class Application(tkinter.Frame):
     def __init__(self, master=None):
@@ -25,8 +26,15 @@ class Application(tkinter.Frame):
     def onQuitPressed(self):
         self.quit()
 
+def askUserForInstallLocation():
+    return tkinter.filedialog.askdirectory()
+
 def start():
     root = tkinter.Tk()
+    root.withdraw()
+    installDir = askUserForInstallLocation()
+    root.wm_deiconify()
+    print(installDir)
     app = Application(root)
     app.mainloop()
     return app.launchGame
