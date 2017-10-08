@@ -1,5 +1,6 @@
 import tkinter
 import tkinter.filedialog
+import tkinter.messagebox
 
 class Application(tkinter.Frame):
     def __init__(self, master=None):
@@ -36,6 +37,9 @@ def init():
 
 def askUserForDirectory(title):
     return tkinter.filedialog.askdirectory(title=title)
+
+def askYesOrNo(title, message):
+    return tkinter.messagebox.askyesno(title=title, message=message)
 
 def runLauncherDialog(title):
     global root,isRootHidden

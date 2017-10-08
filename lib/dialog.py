@@ -8,5 +8,8 @@ def init():
 def askUserForDirectory(title):
     return dialogLib.askUserForDirectory(title)
 
+def askYesOrNo(title, message):
+    return dialogLib.askYesOrNo(title, message)
+
 def runLauncherDialog(title):
     return dialogLib.runLauncherDialog(title)
