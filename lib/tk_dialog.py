@@ -29,12 +29,17 @@ class Application(tkinter.Frame):
 def askUserForInstallLocation():
     return tkinter.filedialog.askdirectory()
 
+TITLE="Launcher"
+
 def start():
     root = tkinter.Tk()
+
     root.withdraw()
     installDir = askUserForInstallLocation()
     root.wm_deiconify()
     print(installDir)
+
+    root.title(TITLE)
     app = Application(root)
     app.mainloop()
     return app.launchGame
