@@ -6,6 +6,12 @@ class BuildManifest(object):
         self.cloudBuildTargetName = cloudBuildTargetName
         self.scmCommitId = scmCommitId
 
+    def getVersionId(self):
+        """ Truncates the commit ID to get a version ID that matches what is
+        found on downloads
+        """
+        return self.scmCommitId[:7]
+
     def __repr__(self):
         return "BuildManifest[cloudBuildTargetName=%s,scmCommitId=%s]" % (self.cloudBuildTargetName, self.scmCommitId)
 
