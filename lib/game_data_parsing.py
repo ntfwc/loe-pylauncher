@@ -1,4 +1,13 @@
 import mmap
+import json
+
+class BuildManifest(object):
+    def __init__(self, cloudBuildTargetName, scmCommitId):
+        self.cloudBuildTargetName = cloudBuildTargetName
+        self.scmCommitId = scmCommitId
+
+    def __repr__(self):
+        return "BuildManifest[cloudBuildTargetName=%s,scmCommitId=%s]" % (self.cloudBuildTargetName, self.scmCommitId)
 
 def extractBuildManifest(resourcesPath):
     with open(resourcesPath, 'rb') as f:
@@ -16,3 +25,7 @@ def extractBuildManifest(resourcesPath):
             return None
 
         return mm[start:end+1]
+
+def parseBuildManifest(buildManifestBytes):
+    jsonBuildManifest = json.loads(buildManifestBytes.decode('utf-8'))
+    return BuildManifest(jsonBuildManifest["cloudBuildTargetName"], jsonBuildManifest["scmCommitId"])
