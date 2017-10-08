@@ -34,8 +34,8 @@ def init():
     root = tkinter.Tk()
     root.withdraw()
 
-def askUserForDirectory():
-    return tkinter.filedialog.askdirectory()
+def askUserForDirectory(title):
+    return tkinter.filedialog.askdirectory(title=title)
 
 def runLauncherDialog(title):
     global root,isRootHidden
