@@ -26,20 +26,23 @@ class Application(tkinter.Frame):
     def onQuitPressed(self):
         self.quit()
 
-def askUserForInstallLocation():
+root=None
+isRootHidden=True
+
+def init():
+    global root
+    root = tkinter.Tk()
+    root.withdraw()
+
+def askUserForDirectory():
     return tkinter.filedialog.askdirectory()
 
-TITLE="Launcher"
+def runLauncherDialog(title):
+    global root,isRootHidden
+    if isRootHidden:
+        root.wm_deiconify()
 
-def start():
-    root = tkinter.Tk()
-
-    root.withdraw()
-    installDir = askUserForInstallLocation()
-    root.wm_deiconify()
-    print(installDir)
-
-    root.title(TITLE)
+    root.title(title)
     app = Application(root)
     app.mainloop()
     return app.launchGame

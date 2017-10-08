@@ -1,4 +1,12 @@
+dialogLib=None
 
-def startDialog():
-    from lib.tk_dialog import start
-    return start()
+def init():
+    global dialogLib
+    import lib.tk_dialog as dialogLib
+    dialogLib.init()
+
+def askUserForDirectory():
+    return dialogLib.askUserForDirectory()
+
+def runLauncherDialog(title):
+    return dialogLib.runLauncherDialog(title)

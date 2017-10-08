@@ -1,11 +1,16 @@
 #!/usr/bin/python3
-from lib.dialog import startDialog
+import lib.dialog
 from subprocess import Popen
 
+TITLE="Launcher"
 GAME_PATH="/usr/bin/leafpad"
 
 def main():
-    userSelectedLaunch = startDialog()
+    lib.dialog.init()
+    installDirectory = lib.dialog.askUserForDirectory()
+    print(installDirectory)
+
+    userSelectedLaunch = lib.dialog.runLauncherDialog(TITLE)
     if userSelectedLaunch:
         launchGame(GAME_PATH)
 
