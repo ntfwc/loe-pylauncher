@@ -1,10 +1,12 @@
 import tkinter
+from lib.game_launch import launchGame
 
 class Application(tkinter.Frame):
     def __init__(self, master=None):
         tkinter.Frame.__init__(self, master)
         self.pack()
         self._createWidgets() 
+        self.launchGame = False
 
     def _createWidgets(self):
         self.quit_button = tkinter.Button(self) 
@@ -18,7 +20,8 @@ class Application(tkinter.Frame):
         self.launch_button.pack(side="left")
 
     def onLaunchPressed(self):
-        print("Launch!")
+        self.launchGame = True
+        self.quit()
 
     def onQuitPressed(self):
         self.quit()
@@ -27,3 +30,5 @@ def start():
     root = tkinter.Tk()
     app = Application(root)
     app.mainloop()
+    if app.launchGame:
+        launchGame()
