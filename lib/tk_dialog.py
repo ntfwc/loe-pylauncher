@@ -1,3 +1,5 @@
+import lib.game_dir_handling
+
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
@@ -10,19 +12,27 @@ class Application(tkinter.Frame):
         self.launchGame = False
 
     def _createWidgets(self):
-        self.quit_button = tkinter.Button(self) 
-        self.quit_button["text"] = "Quit"
-        self.quit_button["command"] = self.onQuitPressed;
-        self.quit_button.pack(side="left")
+        self.quit_button = self._addButton("Quit", self.onQuitPressed)
+        self.change_game_dir_button = self._addButton("Change game directory", self.onChangeGameDirectory)
+        self.launch_button = self._addButton("Launch", self.onLaunchPressed)
 
-        self.launch_button = tkinter.Button(self) 
-        self.launch_button["text"] = "Launch"
-        self.launch_button["command"] = self.onLaunchPressed;
-        self.launch_button.pack(side="left")
+    def _addButton(self, text, command):
+        button = tkinter.Button(self) 
+        button["text"] = text
+        button["command"] = command;
+        button.pack(side="left")
+        return button
+
 
     def onLaunchPressed(self):
         self.launchGame = True
         self.quit()
+
+    def onChangeGameDirectory(self):
+        gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
+        if gameDirectory != None:
+            lib.game_dir_handling.saveGameDirectory(gameDirectory)
+            print("Changed game directory to '%s'" % gameDirectory)
 
     def onQuitPressed(self):
         self.quit()

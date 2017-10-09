@@ -12,8 +12,8 @@ INVALID_GAME_DIR_RETRY_MESSAGE="The game directory does not look valid. Select a
 GAME_DIR_CFG_FILE="game_dir.cfg"
 
 def getGameDirectory():
-    script_dir = os.path.dirname(os.path.realpath(sys.argv[0]))
-    gameDirCfgPath = os.path.join(script_dir, GAME_DIR_CFG_FILE)
+    scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
+    gameDirCfgPath = os.path.join(scriptDir, GAME_DIR_CFG_FILE)
     if os.path.exists(gameDirCfgPath):
         gameDirectory = readFile(gameDirCfgPath)
         if validateGameDirectory(gameDirectory):
@@ -22,7 +22,7 @@ def getGameDirectory():
 
     gameDirectory = askUserForGameDirectory()
     if (gameDirectory != None):
-        writeFile(gameDirCfgPath, gameDirectory)
+        saveGameDirectory(gameDirectory, gameDirCfgPath=gameDirCfgPath)
     return gameDirectory
 
 def askUserForGameDirectory():
@@ -35,5 +35,14 @@ def askUserForGameDirectory():
         if not lib.dialog.askYesOrNo(INVALID_GAME_DIR_TITLE,INVALID_GAME_DIR_RETRY_MESSAGE):
             return None
 
+def saveGameDirectory(gameDirectory, gameDirCfgPath=None):
+    if gameDirCfgPath == None:
+        scriptDir = os.path.dirname(os.path.realpath(sys.argv[0]))
+        gameDirCfgPath = os.path.join(scriptDir, GAME_DIR_CFG_FILE)
+    writeFile(gameDirCfgPath, gameDirectory)
+
 def validateGameDirectory(gameDirectory):
     return os.path.exists(lib.game_paths.getResourcesPath(gameDirectory))
+
+def getScriptDir():
+    return os.path.dirname(os.path.realpath(sys.argv[0]))
