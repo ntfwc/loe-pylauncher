@@ -34,7 +34,7 @@ class Application(tkinter.Frame):
         button = tkinter.Button(frame)
         button["text"] = text
         button["command"] = command;
-        button.pack(side="left")
+        button.pack(side="left", padx=2)
         return button
 
     def startLocalVersionFetcher(self):
