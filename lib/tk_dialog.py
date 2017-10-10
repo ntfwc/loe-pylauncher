@@ -53,7 +53,7 @@ def askUserForDirectory(title):
 def askYesOrNo(title, message):
     return tkinter.messagebox.askyesno(title=title, message=message)
 
-GAME_PATH="/usr/bin/leafpad"
+GAME_EXECUTABLE="/usr/bin/leafpad"
 
 def runLauncherDialog(title):
     global root,isRootHidden
@@ -65,4 +65,4 @@ def runLauncherDialog(title):
     app.mainloop()
     if not app.launchGame:
         return None
-    return GAME_PATH
+    return GAME_EXECUTABLE

@@ -17,13 +17,13 @@ def main():
 
     print("Game Directory: " + gameDirectory)
 
-    gamePath = lib.dialog.runLauncherDialog(TITLE)
-    if gamePath != None:
-        launchGame(gamePath)
+    gameExecutable = lib.dialog.runLauncherDialog(TITLE)
+    if gameExecutable != None:
+        launchGame(gameExecutable)
 
-def launchGame(gamePath):
+def launchGame(gameExecutable):
     print("Launching game...")
-    Popen([gamePath])
+    Popen([gameExecutable])
 
 if __name__ == "__main__":
     main()
