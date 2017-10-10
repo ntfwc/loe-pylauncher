@@ -9,8 +9,6 @@ import sys
 
 TITLE="Launcher"
 
-GAME_PATH="/usr/bin/leafpad"
-
 def main():
     lib.dialog.init()
     gameDirectory = lib.game_dir_handling.getGameDirectory()
@@ -19,9 +17,9 @@ def main():
 
     print("Game Directory: " + gameDirectory)
 
-    userSelectedLaunch = lib.dialog.runLauncherDialog(TITLE)
-    if userSelectedLaunch:
-        launchGame(GAME_PATH)
+    gamePath = lib.dialog.runLauncherDialog(TITLE)
+    if gamePath != None:
+        launchGame(gamePath)
 
 def launchGame(gamePath):
     print("Launching game...")

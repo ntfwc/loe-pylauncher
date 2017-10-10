@@ -5,11 +5,12 @@ import tkinter.filedialog
 import tkinter.messagebox
 
 class Application(tkinter.Frame):
-    def __init__(self, master=None):
+    def __init__(self, gameDirectory, master=None):
         tkinter.Frame.__init__(self, master)
         self.pack()
         self._createWidgets() 
         self.launchGame = False
+        self.gameDirectory = gameDirectory
 
     def _createWidgets(self):
         self.quit_button = self._addButton("Quit", self.onQuitPressed)
@@ -31,6 +32,7 @@ class Application(tkinter.Frame):
     def onChangeGameDirectory(self):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
         if gameDirectory != None:
+            self.gameDirectory = gameDirectory
             lib.game_dir_handling.saveGameDirectory(gameDirectory)
             print("Changed game directory to '%s'" % gameDirectory)
 
@@ -51,6 +53,8 @@ def askUserForDirectory(title):
 def askYesOrNo(title, message):
     return tkinter.messagebox.askyesno(title=title, message=message)
 
+GAME_PATH="/usr/bin/leafpad"
+
 def runLauncherDialog(title):
     global root,isRootHidden
     if isRootHidden:
@@ -59,4 +63,6 @@ def runLauncherDialog(title):
     root.title(title)
     app = Application(root)
     app.mainloop()
-    return app.launchGame
+    if not app.launchGame:
+        return None
+    return GAME_PATH
