@@ -11,6 +11,9 @@ from queue import Queue
 WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
 GAME_DIRECTORY_LABEL_PREFIX = "Game Directory: "
+LOCAL_VERSION_LABEL_PREFIX = "Installed version: "
+LOCAL_VERSION_LABEL_CHECKING = LOCAL_VERSION_LABEL_PREFIX + "Checking..."
+LOCAL_VERSION_LABEL_CHECK_FAILED = LOCAL_VERSION_LABEL_PREFIX + "Check Failed"
 
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
@@ -18,6 +21,7 @@ class Application(tkinter.Frame):
         self.pack()
         self.launchGame = False
         self.gameDirectory = gameDirectory
+        self.localVersion = None
 
         self._createWidgets() 
 
@@ -34,6 +38,10 @@ class Application(tkinter.Frame):
         self._updateGameDirectoryLabel()
         self.gameDirectoryLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
 
+        self.localVersionLabel = tkinter.Label(self.labelFrame)
+        self._updateLocalVersionLabel()
+        self.localVersionLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
+
         self.buttonFrame = tkinter.Frame(self)
         self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
@@ -44,6 +52,10 @@ class Application(tkinter.Frame):
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel["text"] = GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"'
 
+    def _updateLocalVersionLabel(self):
+        version = self.localVersion if self.localVersion != None else ""
+        self.localVersionLabel["text"] = LOCAL_VERSION_LABEL_PREFIX + version
+
     def _addButton(self, frame, text, command):
         button = tkinter.Button(frame)
         button["text"] = text
@@ -52,14 +64,18 @@ class Application(tkinter.Frame):
         return button
 
     def startLocalVersionFetcher(self):
+        self.localVersionLabel["text"] = LOCAL_VERSION_LABEL_CHECKING
         thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,self.localVersionFetcherCallback))
         thread.daemon = True
         thread.start()
 
     def localVersionFetcherCallback(self, version):
         def tkTask():
-            print(threading.currentThread())
-            print(version)
+            self.localVersion = version
+            if (version == None):
+                self.localVersionLabel["text"] = LOCAL_VERSION_LABEL_CHECK_FAILED
+            else:
+                self._updateLocalVersionLabel()
         self.runOnTkThread(tkTask)
 
     def runPeriodicProcessing(self):
