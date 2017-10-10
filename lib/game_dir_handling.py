@@ -7,7 +7,7 @@ import sys
 TITLE="Launcher"
 GAME_DIR_DIALOG_TITLE="Please select the game directory"
 INVALID_GAME_DIR_TITLE="Invalid game directory"
-INVALID_GAME_DIR_RETRY_MESSAGE="The game directory does not look valid. Select a different directory?"
+INVALID_GAME_DIR_RETRY_MESSAGE='The game directory "%s" does not look valid. Select a different directory?'
 
 GAME_DIR_CFG_FILE="game_dir.cfg"
 
@@ -32,7 +32,7 @@ def askUserForGameDirectory():
             return None
         if validateGameDirectory(gameDirectory):
             return gameDirectory
-        if not lib.dialog.askYesOrNo(INVALID_GAME_DIR_TITLE,INVALID_GAME_DIR_RETRY_MESSAGE):
+        if not lib.dialog.askYesOrNo(INVALID_GAME_DIR_TITLE,INVALID_GAME_DIR_RETRY_MESSAGE % gameDirectory):
             return None
 
 def saveGameDirectory(gameDirectory, gameDirCfgPath=None):
