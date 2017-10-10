@@ -17,7 +17,7 @@ def main():
 
     print("Game Directory: " + gameDirectory)
 
-    gameExecutable = lib.dialog.runLauncherDialog(TITLE)
+    gameExecutable = lib.dialog.runLauncherDialog(gameDirectory, TITLE)
     if gameExecutable != None:
         launchGame(gameExecutable)
 

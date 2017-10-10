@@ -11,5 +11,5 @@ def askUserForDirectory(title):
 def askYesOrNo(title, message):
     return dialogLib.askYesOrNo(title, message)
 
-def runLauncherDialog(title):
-    return dialogLib.runLauncherDialog(title)
+def runLauncherDialog(gameDirectory, title):
+    return dialogLib.runLauncherDialog(gameDirectory, title)

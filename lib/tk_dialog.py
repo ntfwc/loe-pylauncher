@@ -1,4 +1,5 @@
 import lib.game_dir_handling
+import lib.game_paths
 
 import tkinter
 import tkinter.filedialog
@@ -55,14 +56,15 @@ def askYesOrNo(title, message):
 
 GAME_EXECUTABLE="/usr/bin/leafpad"
 
-def runLauncherDialog(title):
+def runLauncherDialog(gameDirectory, title):
     global root,isRootHidden
     if isRootHidden:
         root.wm_deiconify()
 
     root.title(title)
-    app = Application(root)
+    app = Application(gameDirectory, master=root)
     app.mainloop()
     if not app.launchGame:
         return None
+    print(lib.game_paths.determineGameExecutablePath(app.gameDirectory))
     return GAME_EXECUTABLE
