@@ -18,3 +18,9 @@ def __determineGameExecutableName():
             return "loe.x86_64"
         else:
             return "loe.x86"
+    elif system == "Windows":
+        return "LoE.exe"
+    else:
+        # Mac
+        return "LoE.app"
+
