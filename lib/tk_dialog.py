@@ -23,12 +23,15 @@ class Application(tkinter.Frame):
         self.startLocalVersionFetcher()
 
     def _createWidgets(self):
-        self.quit_button = self._addButton("Quit", self.onQuitPressed)
-        self.change_game_dir_button = self._addButton("Change game directory", self.onChangeGameDirectory)
-        self.launch_button = self._addButton("Launch", self.onLaunchPressed)
+        self.buttonFrame = tkinter.Frame(self)
+        self.buttonFrame.pack(side="top", padx=5, pady=5)
 
-    def _addButton(self, text, command):
-        button = tkinter.Button(self) 
+        self.quit_button = self._addButton(self.buttonFrame, "Quit", self.onQuitPressed)
+        self.change_game_dir_button = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectory)
+        self.launch_button = self._addButton(self.buttonFrame, "Launch", self.onLaunchPressed)
+
+    def _addButton(self, frame, text, command):
+        button = tkinter.Button(frame)
         button["text"] = text
         button["command"] = command;
         button.pack(side="left")
