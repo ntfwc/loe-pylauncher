@@ -8,14 +8,18 @@ import tkinter.messagebox
 import threading
 from queue import Queue
 
+WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
+GAME_DIRECTORY_LABEL_PREFIX = "Game Directory: "
+
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
         tkinter.Frame.__init__(self, master)
         self.pack()
-        self._createWidgets() 
         self.launchGame = False
         self.gameDirectory = gameDirectory
+
+        self._createWidgets() 
 
         self.taskQueue = Queue(TASK_QUEUE_SIZE)
         self.master.after(200, self.runPeriodicProcessing)
@@ -23,18 +27,28 @@ class Application(tkinter.Frame):
         self.startLocalVersionFetcher()
 
     def _createWidgets(self):
+        self.labelFrame = tkinter.Frame(self)
+        self.labelFrame.pack(side=tkinter.TOP, padx=5, pady=5)
+
+        self.gameDirectoryLabel = tkinter.Label(self.labelFrame)
+        self._updateGameDirectoryLabel()
+        self.gameDirectoryLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
+
         self.buttonFrame = tkinter.Frame(self)
-        self.buttonFrame.pack(side="top", padx=5, pady=5)
+        self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
         self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitPressed)
         self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectory)
         self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchPressed)
 
+    def _updateGameDirectoryLabel(self):
+        self.gameDirectoryLabel["text"] = GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"'
+
     def _addButton(self, frame, text, command):
         button = tkinter.Button(frame)
         button["text"] = text
         button["command"] = command;
-        button.pack(side="left", padx=2)
+        button.pack(side=tkinter.LEFT, padx=2)
         return button
 
     def startLocalVersionFetcher(self):
@@ -70,6 +84,7 @@ class Application(tkinter.Frame):
             self.gameDirectory = gameDirectory
             lib.game_dir_handling.saveGameDirectory(gameDirectory)
             print("Changed game directory to '%s'" % gameDirectory)
+            self._updateGameDirectoryLabel()
             self.startLocalVersionFetcher()
 
     def onQuitPressed(self):
