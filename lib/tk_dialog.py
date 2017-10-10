@@ -26,9 +26,9 @@ class Application(tkinter.Frame):
         self.buttonFrame = tkinter.Frame(self)
         self.buttonFrame.pack(side="top", padx=5, pady=5)
 
-        self.quit_button = self._addButton(self.buttonFrame, "Quit", self.onQuitPressed)
-        self.change_game_dir_button = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectory)
-        self.launch_button = self._addButton(self.buttonFrame, "Launch", self.onLaunchPressed)
+        self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitPressed)
+        self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectory)
+        self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchPressed)
 
     def _addButton(self, frame, text, command):
         button = tkinter.Button(frame)
