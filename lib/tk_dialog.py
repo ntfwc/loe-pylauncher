@@ -1,9 +1,11 @@
 import lib.game_dir_handling
 import lib.game_paths
+import lib.version_fetching
 
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
+import threading
 
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
@@ -12,6 +14,7 @@ class Application(tkinter.Frame):
         self._createWidgets() 
         self.launchGame = False
         self.gameDirectory = gameDirectory
+        self.startLocalVersionFetcher()
 
     def _createWidgets(self):
         self.quit_button = self._addButton("Quit", self.onQuitPressed)
@@ -25,6 +28,10 @@ class Application(tkinter.Frame):
         button.pack(side="left")
         return button
 
+    def startLocalVersionFetcher(self):
+        thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,))
+        thread.daemon = True
+        thread.start()
 
     def onLaunchPressed(self):
         self.launchGame = True
@@ -36,9 +43,13 @@ class Application(tkinter.Frame):
             self.gameDirectory = gameDirectory
             lib.game_dir_handling.saveGameDirectory(gameDirectory)
             print("Changed game directory to '%s'" % gameDirectory)
+            self.startLocalVersionFetcher()
 
     def onQuitPressed(self):
         self.quit()
+
+def _fetchLocalVersion(gameDirectory):
+    print(lib.version_fetching.getInstalledVersionId(gameDirectory))
 
 root=None
 isRootHidden=True
