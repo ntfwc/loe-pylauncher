@@ -6,7 +6,9 @@ import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 import threading
+from queue import Queue
 
+TASK_QUEUE_SIZE = 10
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
         tkinter.Frame.__init__(self, master)
@@ -14,6 +16,10 @@ class Application(tkinter.Frame):
         self._createWidgets() 
         self.launchGame = False
         self.gameDirectory = gameDirectory
+
+        self.taskQueue = Queue(TASK_QUEUE_SIZE)
+        self.master.after(200, self.runPeriodicProcessing)
+
         self.startLocalVersionFetcher()
 
     def _createWidgets(self):
@@ -29,9 +35,27 @@ class Application(tkinter.Frame):
         return button
 
     def startLocalVersionFetcher(self):
-        thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,))
+        thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,self.localVersionFetcherCallback))
         thread.daemon = True
         thread.start()
+
+    def localVersionFetcherCallback(self, version):
+        def tkTask():
+            print(threading.currentThread())
+            print(version)
+        self.runOnTkThread(tkTask)
+
+    def runPeriodicProcessing(self):
+        self.processTaskQueue()
+        self.master.after(200, self.runPeriodicProcessing)
+
+    def processTaskQueue(self):
+        while not self.taskQueue.empty():
+            try:
+                task = self.taskQueue.get_nowait()
+                task()
+            except Queue.Empty:
+                pass
 
     def onLaunchPressed(self):
         self.launchGame = True
@@ -48,8 +72,11 @@ class Application(tkinter.Frame):
     def onQuitPressed(self):
         self.quit()
 
-def _fetchLocalVersion(gameDirectory):
-    print(lib.version_fetching.getInstalledVersionId(gameDirectory))
+    def runOnTkThread(self, target):
+        self.taskQueue.put(target)
+
+def _fetchLocalVersion(gameDirectory, callback):
+    callback(lib.version_fetching.getInstalledVersionId(gameDirectory))
 
 root=None
 isRootHidden=True
