@@ -16,12 +16,15 @@ def getInstalledVersionId(gameDirectory):
 
 def fetchAvailableVersionId():
     try:
-        availableVersion = lib.loe_api.parseLatestVersion(lib.loe_api.downloadVersionsJson())
+        versionsJsonBytes = lib.loe_api.downloadVersionsJson()
+        if versionsJsonBytes == None:
+            print("Failed to fetch available version")
+            return None
+
+        availableVersion = lib.loe_api.parseLatestVersion(versionsJsonBytes)
         if availableVersion == None:
             print("Failed to parse available version")
         return availableVersion
     except:
         print("Failed to fetch available version")
         return None
-
-
