@@ -11,9 +11,14 @@ from queue import Queue
 WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
 GAME_DIRECTORY_LABEL_PREFIX = "Game Directory: "
+
 LOCAL_VERSION_LABEL_PREFIX = "Installed version: "
 LOCAL_VERSION_LABEL_CHECKING = LOCAL_VERSION_LABEL_PREFIX + "Checking..."
 LOCAL_VERSION_LABEL_CHECK_FAILED = LOCAL_VERSION_LABEL_PREFIX + "Check Failed"
+
+AVAILABLE_VERSION_LABEL_PREFIX = "Available version: "
+AVAILABLE_VERSION_LABEL_CHECKING = AVAILABLE_VERSION_LABEL_PREFIX + "Checking..."
+
 
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
@@ -22,6 +27,7 @@ class Application(tkinter.Frame):
         self.launchGame = False
         self.gameDirectory = gameDirectory
         self.localVersion = None
+        self.availableVersion = None
 
         self._createWidgets() 
 
@@ -42,6 +48,10 @@ class Application(tkinter.Frame):
         self._updateLocalVersionLabel()
         self.localVersionLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
 
+        self.availableVersionLabel = tkinter.Label(self.labelFrame)
+        self._updateAvailableVersionLabel()
+        self.availableVersionLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
+
         self.buttonFrame = tkinter.Frame(self)
         self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
@@ -55,6 +65,10 @@ class Application(tkinter.Frame):
     def _updateLocalVersionLabel(self):
         version = self.localVersion if self.localVersion != None else ""
         self.localVersionLabel["text"] = LOCAL_VERSION_LABEL_PREFIX + version
+
+    def _updateAvailableVersionLabel(self):
+        version = self.availableVersion if self.availableVersion != None else ""
+        self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version
 
     def _addButton(self, frame, text, command):
         button = tkinter.Button(frame)
