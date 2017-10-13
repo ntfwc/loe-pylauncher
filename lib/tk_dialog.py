@@ -18,6 +18,7 @@ LOCAL_VERSION_LABEL_CHECK_FAILED = LOCAL_VERSION_LABEL_PREFIX + "Check Failed"
 
 AVAILABLE_VERSION_LABEL_PREFIX = "Available version: "
 AVAILABLE_VERSION_LABEL_CHECKING = AVAILABLE_VERSION_LABEL_PREFIX + "Checking..."
+AVAILABLE_VERSION_LABEL_CHECK_FAILED = AVAILABLE_VERSION_LABEL_PREFIX + "Check Failed"
 
 
 class Application(tkinter.Frame):
@@ -35,6 +36,7 @@ class Application(tkinter.Frame):
         self.master.after(200, self.runPeriodicProcessing)
 
         self.startLocalVersionFetcher()
+        self.startAvailableVersionFetcher()
 
     def _createWidgets(self):
         self.labelFrame = tkinter.Frame(self)
@@ -92,6 +94,21 @@ class Application(tkinter.Frame):
                 self._updateLocalVersionLabel()
         self.runOnTkThread(tkTask)
 
+    def startAvailableVersionFetcher(self):
+        self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_CHECKING
+        thread = threading.Thread(target=_fetchAvailableVersion, args=(self.availableVersionFetcherCallback,))
+        thread.daemon = True
+        thread.start()
+
+    def availableVersionFetcherCallback(self, version):
+        def tkTask():
+            self.availableVersion = version
+            if (version == None):
+                self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_CHECK_FAILED
+            else:
+                self._updateAvailableVersionLabel()
+        self.runOnTkThread(tkTask)
+
     def runPeriodicProcessing(self):
         self.processTaskQueue()
         self.master.after(200, self.runPeriodicProcessing)
@@ -125,6 +142,9 @@ class Application(tkinter.Frame):
 
 def _fetchLocalVersion(gameDirectory, callback):
     callback(lib.version_fetching.getInstalledVersionId(gameDirectory))
+
+def _fetchAvailableVersion(callback):
+    callback(lib.version_fetching.fetchAvailableVersionId())
 
 root=None
 isRootHidden=True
