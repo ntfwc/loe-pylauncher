@@ -70,7 +70,14 @@ class Application(tkinter.Frame):
 
     def _updateAvailableVersionLabel(self):
         version = self.availableVersion if self.availableVersion != None else ""
-        self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version
+        postfix = ""
+        if self.availableVersion != None and self.localVersion != None:
+            if self.availableVersion == self.localVersion:
+                postfix = " (Same)"
+            else:
+                postfix = " (New)"
+
+        self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version + postfix
 
     def _addButton(self, frame, text, command):
         button = tkinter.Button(frame)
@@ -92,6 +99,8 @@ class Application(tkinter.Frame):
                 self.localVersionLabel["text"] = LOCAL_VERSION_LABEL_CHECK_FAILED
             else:
                 self._updateLocalVersionLabel()
+                if self.availableVersion != None:
+                    self._updateAvailableVersionLabel()
         self.runOnTkThread(tkTask)
 
     def startAvailableVersionFetcher(self):
