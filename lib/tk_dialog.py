@@ -1,12 +1,14 @@
 import lib.game_dir_handling
 import lib.game_paths
 import lib.version_fetching
+from lib.constants import DOWNLOADS_PAGE
 
 import tkinter
 import tkinter.filedialog
 import tkinter.messagebox
 import threading
 from queue import Queue
+import webbrowser
 
 WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
@@ -59,6 +61,7 @@ class Application(tkinter.Frame):
 
         self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitClicked)
         self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectoryClicked)
+        self.openDownloadsPageButton = self._addButton(self.buttonFrame, "Open Downloads page", self.onOpenDownloadsPageClicked)
         self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchClicked)
 
     def _updateGameDirectoryLabel(self):
@@ -142,6 +145,9 @@ class Application(tkinter.Frame):
             print("Changed game directory to '%s'" % gameDirectory)
             self._updateGameDirectoryLabel()
             self.startLocalVersionFetcher()
+
+    def onOpenDownloadsPageClicked(self):
+        webbrowser.open(DOWNLOADS_PAGE)
 
     def onQuitClicked(self):
         self.quit()
