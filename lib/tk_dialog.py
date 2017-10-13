@@ -57,9 +57,9 @@ class Application(tkinter.Frame):
         self.buttonFrame = tkinter.Frame(self)
         self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
-        self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitPressed)
-        self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectory)
-        self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchPressed)
+        self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitClicked)
+        self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectoryClicked)
+        self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchClicked)
 
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel["text"] = GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"'
@@ -130,11 +130,11 @@ class Application(tkinter.Frame):
             except Queue.Empty:
                 pass
 
-    def onLaunchPressed(self):
+    def onLaunchClicked(self):
         self.launchGame = True
         self.quit()
 
-    def onChangeGameDirectory(self):
+    def onChangeGameDirectoryClicked(self):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
         if gameDirectory != None:
             self.gameDirectory = gameDirectory
@@ -143,7 +143,7 @@ class Application(tkinter.Frame):
             self._updateGameDirectoryLabel()
             self.startLocalVersionFetcher()
 
-    def onQuitPressed(self):
+    def onQuitClicked(self):
         self.quit()
 
     def runOnTkThread(self, target):
