@@ -29,6 +29,7 @@ import tkinter.messagebox
 import threading
 from queue import Queue
 import webbrowser
+import os.path
 
 WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
@@ -42,6 +43,8 @@ AVAILABLE_VERSION_LABEL_PREFIX = "Available version: "
 AVAILABLE_VERSION_LABEL_CHECKING = AVAILABLE_VERSION_LABEL_PREFIX + "Checking..."
 AVAILABLE_VERSION_LABEL_CHECK_FAILED = AVAILABLE_VERSION_LABEL_PREFIX + "Check Failed"
 
+LAUNCH_ERROR_TITLE = "Launch Error"
+LAUNCH_ERROR_MESSAGE = "The expected launch executable '%s' was not found"
 
 class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
@@ -154,8 +157,12 @@ class Application(tkinter.Frame):
                 pass
 
     def onLaunchClicked(self):
-        self.executableToLaunch = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
-        self.quit()
+        executable = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
+        if os.path.exists(executable):
+            self.executableToLaunch = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
+            self.quit()
+        else:
+            displayError(LAUNCH_ERROR_TITLE, LAUNCH_ERROR_MESSAGE % executable)
 
     def onChangeGameDirectoryClicked(self):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
@@ -194,6 +201,9 @@ def askUserForDirectory(title):
 
 def askYesOrNo(title, message):
     return tkinter.messagebox.askyesno(title=title, message=message)
+
+def displayError(title, message):
+    tkinter.messagebox.showerror(title=title, message=message)
 
 def runLauncherDialog(gameDirectory, title):
     global root,isRootHidden
