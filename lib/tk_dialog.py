@@ -47,7 +47,7 @@ class Application(tkinter.Frame):
     def __init__(self, gameDirectory, master=None):
         tkinter.Frame.__init__(self, master)
         self.pack()
-        self.launchGame = False
+        self.executableToLaunch = None
         self.gameDirectory = gameDirectory
         self.localVersion = None
         self.availableVersion = None
@@ -154,7 +154,7 @@ class Application(tkinter.Frame):
                 pass
 
     def onLaunchClicked(self):
-        self.launchGame = True
+        self.executableToLaunch = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
         self.quit()
 
     def onChangeGameDirectoryClicked(self):
@@ -203,6 +203,4 @@ def runLauncherDialog(gameDirectory, title):
     root.title(title)
     app = Application(gameDirectory, master=root)
     app.mainloop()
-    if not app.launchGame:
-        return None
-    return lib.game_paths.determineGameExecutablePath(app.gameDirectory);
+    return app.executableToLaunch
