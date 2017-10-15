@@ -31,6 +31,9 @@ import sys
 TITLE="Launcher"
 
 def main():
+    if sys.version_info[0] != 3:
+        print("This script is being run on an unsupported Python version. Python 3 is required")
+        return
     lib.dialog.init()
     gameDirectory = lib.game_dir_handling.getGameDirectory()
     if gameDirectory == None:
