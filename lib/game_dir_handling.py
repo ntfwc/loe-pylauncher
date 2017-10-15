@@ -48,7 +48,7 @@ def getGameDirectory():
 def askUserForGameDirectory():
     while True:
         gameDirectory = lib.dialog.askUserForDirectory(GAME_DIR_DIALOG_TITLE)
-        if gameDirectory == ():
+        if len(gameDirectory) == 0:
             return None
         if validateGameDirectory(gameDirectory):
             return gameDirectory
