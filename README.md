@@ -17,13 +17,16 @@ A simple cross-platform python-based launcher to be used with Legends of Equestr
 On Linux:
 > ./launcher.py
 
-On any operating system, if you have setup the Python 3 bin directory in your path:
+On Linux or Mac, if you have the Python 3 executable in your path (It is possible the executable for Python 3 may be python instead of python3):
 > python3 launcher.py
+
+On Windows:
+> launcher.bat
 
 ## From a file manager
 On Linux, with most file managers, you should be able to double-click launcher.py to run it.
 
-(A windows batch file is planned, which should make launching from there easier)
+On Windows, double click on launcher.bat
 
 # Usage
 On first run, the launcher will have you select the game directory. It must be the directory that contains loe_Data. The main dialog allows you to switch this directory later. On later runs, if the game directory is moved or deleted, the launcher will ask for a new game directory.
