@@ -9,9 +9,14 @@ def askUserForDirectory(title):
     dialog = Gtk.FileChooserDialog(title, None, Gtk.FileChooserAction.SELECT_FOLDER, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL, Gtk.STOCK_OPEN, Gtk.ResponseType.OK))
     dialog.set_default_response(Gtk.ResponseType.OK)
 
-    dialog.run()
+    result = None
+    if dialog.run() == Gtk.ResponseType.OK:
+        result = dialog.get_filename()
+
     dialog.destroy()
     __process_remaining_events()
+
+    return result
 
 def askYesOrNo(title, message):
     dialog = Gtk.MessageDialog(parent=None, message_type=Gtk.MessageType.QUESTION, buttons=Gtk.ButtonsType.YES_NO, message_format=message)
