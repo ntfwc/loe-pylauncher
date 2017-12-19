@@ -28,6 +28,14 @@ def askYesOrNo(title, message):
 
     return response == Gtk.ResponseType.YES
 
+def displayError(title, message):
+    dialog = Gtk.MessageDialog(parent=None, message_type=Gtk.MessageType.ERROR, buttons=Gtk.ButtonsType.OK, message_format=message)
+    dialog.set_title(title)
+
+    dialog.run()
+    dialog.destroy()
+    __process_remaining_events()
+
 def __process_remaining_events():
     while Gtk.events_pending():
         Gtk.main_iteration()
