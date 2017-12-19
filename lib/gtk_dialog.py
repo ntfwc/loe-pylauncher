@@ -11,6 +11,19 @@ def askUserForDirectory(title):
 
     dialog.run()
     dialog.destroy()
+    __process_remaining_events()
 
+def askYesOrNo(title, message):
+    dialog = Gtk.MessageDialog(parent=None, message_type=Gtk.MessageType.QUESTION, buttons=Gtk.ButtonsType.YES_NO, message_format=message)
+    dialog.set_title(title)
+
+    response = dialog.run()
+    dialog.destroy()
+    __process_remaining_events()
+
+    return response == Gtk.ResponseType.YES
+
+def __process_remaining_events():
     while Gtk.events_pending():
         Gtk.main_iteration()
+
