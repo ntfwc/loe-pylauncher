@@ -2,6 +2,12 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+class Application(Gtk.Window):
+    def __init__(self, gameDirectory):
+        super().__init__()
+        self.connect("delete-event", Gtk.main_quit)
+        self.gameDirectory = gameDirectory
+
 def init():
     pass
 
@@ -40,3 +46,8 @@ def __process_remaining_events():
     while Gtk.events_pending():
         Gtk.main_iteration()
 
+def runLauncherDialog(gameDirectory, title):
+    app = Application(gameDirectory)
+    app.show_all()
+    Gtk.main()
+    return None
