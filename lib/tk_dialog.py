@@ -21,7 +21,16 @@
 import lib.game_dir_handling
 import lib.game_paths
 import lib.version_fetching
-from lib.constants import DOWNLOADS_PAGE
+from lib.constants import (DOWNLOADS_PAGE,
+                           GAME_DIRECTORY_LABEL_PREFIX,
+                           LOCAL_VERSION_LABEL_PREFIX,
+                           LOCAL_VERSION_LABEL_CHECKING,
+                           LOCAL_VERSION_LABEL_CHECK_FAILED,
+                           AVAILABLE_VERSION_LABEL_PREFIX,
+                           AVAILABLE_VERSION_LABEL_CHECKING,
+                           AVAILABLE_VERSION_LABEL_CHECK_FAILED,
+                           LAUNCH_ERROR_TITLE,
+                           LAUNCH_ERROR_MESSAGE)
 
 import tkinter
 import tkinter.ttk
@@ -35,18 +44,6 @@ import os.path
 import platform
 
 TASK_QUEUE_SIZE = 10
-GAME_DIRECTORY_LABEL_PREFIX = "Game Directory: "
-
-LOCAL_VERSION_LABEL_PREFIX = "Installed version: "
-LOCAL_VERSION_LABEL_CHECKING = LOCAL_VERSION_LABEL_PREFIX + "Checking..."
-LOCAL_VERSION_LABEL_CHECK_FAILED = LOCAL_VERSION_LABEL_PREFIX + "Check Failed"
-
-AVAILABLE_VERSION_LABEL_PREFIX = "Available version: "
-AVAILABLE_VERSION_LABEL_CHECKING = AVAILABLE_VERSION_LABEL_PREFIX + "Checking..."
-AVAILABLE_VERSION_LABEL_CHECK_FAILED = AVAILABLE_VERSION_LABEL_PREFIX + "Check Failed"
-
-LAUNCH_ERROR_TITLE = "Launch Error"
-LAUNCH_ERROR_MESSAGE = "The expected launch executable '%s' was not found"
 
 class Application(tkinter.ttk.Frame):
     def __init__(self, gameDirectory, master=None):
