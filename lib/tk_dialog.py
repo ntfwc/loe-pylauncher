@@ -103,10 +103,7 @@ class Application(tkinter.ttk.Frame):
         version = self.availableVersion if self.availableVersion != None else ""
         postfix = ""
         if self.availableVersion != None and self.localVersion != None:
-            if self.availableVersion == self.localVersion:
-                postfix = STATUS_SAME_POSTFIX
-            else:
-                postfix = STATUS_NEW_POSTFIX
+            postfix = STATUS_SAME_POSTFIX if self.availableVersion == self.localVersion else STATUS_NEW_POSTFIX
 
         self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version + postfix
 
