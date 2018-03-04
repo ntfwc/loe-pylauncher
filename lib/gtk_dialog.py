@@ -40,12 +40,15 @@ class Application(Gtk.Window):
         self.rootBox.pack_start(self.labelBox, True, True, 0)
 
         self.gameDirectoryLabel = self._addLabel()
+        self.gameDirectoryLabel.set_halign(Gtk.Align.START)
         self._updateGameDirectoryLabel()
 
         self.localVersionLabel = self._addLabel()
+        self.localVersionLabel.set_halign(Gtk.Align.START)
         self._updateLocalVersionLabel()
 
         self.availableVersionLabel = self._addLabel()
+        self.availableVersionLabel.set_halign(Gtk.Align.START)
         self._updateAvailableVersionLabel()
 
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
