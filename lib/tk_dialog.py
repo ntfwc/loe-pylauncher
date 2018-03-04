@@ -34,7 +34,9 @@ from lib.constants import (DOWNLOADS_PAGE,
                            QUIT_BUTTON_TEXT,
                            CHANGE_GAME_DIR_BUTTON_TEXT,
                            OPEN_DOWNLOAD_PAGE_BUTTON_TEXT,
-                           LAUNCH_BUTTON_TEXT)
+                           LAUNCH_BUTTON_TEXT,
+                           STATUS_SAME_POSTFIX,
+                           STATUS_NEW_POSTFIX)
 
 import tkinter
 import tkinter.ttk
@@ -102,9 +104,9 @@ class Application(tkinter.ttk.Frame):
         postfix = ""
         if self.availableVersion != None and self.localVersion != None:
             if self.availableVersion == self.localVersion:
-                postfix = " (Same)"
+                postfix = STATUS_SAME_POSTFIX
             else:
-                postfix = " (New)"
+                postfix = STATUS_NEW_POSTFIX
 
         self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version + postfix
 

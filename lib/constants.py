@@ -37,3 +37,6 @@ QUIT_BUTTON_TEXT = "Quit"
 CHANGE_GAME_DIR_BUTTON_TEXT = "Change game directory"
 OPEN_DOWNLOAD_PAGE_BUTTON_TEXT = "Open Downloads page"
 LAUNCH_BUTTON_TEXT = "Launch"
+
+STATUS_SAME_POSTFIX = " (Same)"
+STATUS_NEW_POSTFIX = " (New)"
