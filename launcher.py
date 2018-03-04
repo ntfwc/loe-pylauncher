@@ -27,14 +27,22 @@ import lib.game_dir_handling
 from subprocess import Popen
 import os.path
 import sys
+import argparse
 
 TITLE="Launcher"
+
+def parse_argv():
+    parser = argparse.ArgumentParser(description='A launcher for Legends of Equestria')
+    parser.add_argument('-t', action='store_true', help='always use the Tk interface')
+    return parser.parse_args()
 
 def main():
     if sys.version_info[0] != 3:
         print("This script is being run on an unsupported Python version. Python 3 is required")
         return
-    lib.dialog.init()
+    parsed_args = parse_argv()
+
+    lib.dialog.init(parsed_args.t)
     gameDirectory = lib.game_dir_handling.getGameDirectory()
     if gameDirectory == None:
         return

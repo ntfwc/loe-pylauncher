@@ -18,11 +18,19 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import importlib.util
+
 dialogLib=None
 
-def init():
+def init(alwaysUseTk):
     global dialogLib
-    import lib.tk_dialog as dialogLib
+    if alwaysUseTk:
+        import lib.tk_dialog as dialogLib
+    else:
+        if importlib.util.find_spec("gi") != None:
+            import lib.gtk_dialog as dialogLib
+        else:
+            import lib.tk_dialog as dialogLib
     dialogLib.init()
 
 def askUserForDirectory(title):
