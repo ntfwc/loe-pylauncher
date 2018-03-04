@@ -10,6 +10,8 @@ A simple cross-platform python-based launcher to be used with Legends of Equestr
 # Dependencies
 
 * [Python 3](https://www.python.org/downloads/)
+* (Optional, on Linux/Mac) [Gtk3 PyGObject](http://pygobject.readthedocs.io/en/latest/getting_started.html)
+  * Though you can get PyGObject installed on Windows, at the time of writing, installation is more complicated than it should be.
 
 # Running
 
@@ -38,3 +40,8 @@ The versions will start being fetched after the dialog opens. The installed vers
 Note: The launcher does not force you to wait for the versions to be checked.
 
 When you press launch, the launcher will look for the executable appropriate for your system and launch it. The launcher should exit afterwards.
+
+# UI Toolkits
+There are two version of the user interface. One uses Tk and the other uses Gtk+ 3. The advantage of the Gtk+ 3 version is simply that it looks more modern. If you have PyGObject installed, the Gtk+ 3 version will be used by default, otherwise it will be the Tk interface.
+
+You can force the Tk user interface to be used by passing the "-t" parameter to the launcher.
