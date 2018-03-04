@@ -11,14 +11,27 @@ class Application(Gtk.Window):
         self._createWidgets()
 
     def _createWidgets(self):
+        self.rootBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+
         self.labelBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
         self.labelBox.set_homogeneous(False)
+        self.rootBox.pack_start(self.labelBox, True, True, 0)
 
         self.gameDirectoryLabel =  Gtk.Label("Some label")
         self.gameDirectoryLabel.set_justify(Gtk.Justification.LEFT)
         self.labelBox.pack_start(self.gameDirectoryLabel, True, True, 0)
 
-        self.add(self.labelBox)
+        self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
+        self.rootBox.pack_start(self.buttonBox, True, True, 0)
+
+        self.quitButton = Gtk.Button.new_with_label("Quit")
+        self.quitButton.connect("clicked", self.onQuitClicked)
+        self.buttonBox.pack_start(self.quitButton, True, True, 0)
+
+        self.add(self.rootBox)
+
+    def onQuitClicked(self, button):
+        Gtk.main_quit()
 
 def init():
     pass
