@@ -7,8 +7,13 @@ from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
                            LOCAL_VERSION_LABEL_PREFIX,
                            LOCAL_VERSION_LABEL_CHECKING,
                            LOCAL_VERSION_LABEL_CHECK_FAILED,
+                           AVAILABLE_VERSION_LABEL_PREFIX,
+                           AVAILABLE_VERSION_LABEL_CHECKING,
+                           AVAILABLE_VERSION_LABEL_CHECK_FAILED,
                            QUIT_BUTTON_TEXT,
-                           CHANGE_GAME_DIR_BUTTON_TEXT)
+                           CHANGE_GAME_DIR_BUTTON_TEXT,
+                           STATUS_SAME_POSTFIX,
+                           STATUS_NEW_POSTFIX)
 
 import lib.game_dir_handling
 import lib.version_fetching
@@ -21,6 +26,7 @@ class Application(Gtk.Window):
         self.connect("delete-event", Gtk.main_quit)
         self.gameDirectory = gameDirectory
         self.localVersion = None
+        self.availableVersion = None
 
         self._createWidgets()
 
@@ -38,6 +44,9 @@ class Application(Gtk.Window):
 
         self.localVersionLabel = self._addLabel()
         self._updateLocalVersionLabel()
+
+        self.availableVersionLabel = self._addLabel()
+        self._updateAvailableVersionLabel()
 
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.rootBox.pack_start(self.buttonBox, True, True, 0)
@@ -66,6 +75,14 @@ class Application(Gtk.Window):
         version = self.localVersion if self.localVersion != None else ""
         self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_PREFIX + version)
 
+    def _updateAvailableVersionLabel(self):
+        version = self.availableVersion if self.availableVersion != None else ""
+        postfix = ""
+        if self.availableVersion != None and self.localVersion != None:
+            postfix = STATUS_SAME_POSTFIX if self.availableVersion == self.localVersion else STATUS_NEW_POSTFIX
+
+        self.availableVersionLabel.set_text(AVAILABLE_VERSION_LABEL_PREFIX + version + postfix)
+
     def _startLocalVersionFetcher(self):
         self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_CHECKING)
         thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,self._localVersionFetcherCallback))
@@ -79,8 +96,8 @@ class Application(Gtk.Window):
                 self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_CHECK_FAILED)
             else:
                 self._updateLocalVersionLabel()
-                #if self.availableVersion != None:
-                #    self._updateAvailableVersionLabel()
+                if self.availableVersion != None:
+                    self._updateAvailableVersionLabel()
         GObject.idle_add(gtkTask)
 
     def onChangeGameDirectoryClicked(self, button):
