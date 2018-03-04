@@ -1,13 +1,19 @@
 import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
+from gi.repository import GObject
 
 from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
                            LOCAL_VERSION_LABEL_PREFIX,
+                           LOCAL_VERSION_LABEL_CHECKING,
+                           LOCAL_VERSION_LABEL_CHECK_FAILED,
                            QUIT_BUTTON_TEXT,
                            CHANGE_GAME_DIR_BUTTON_TEXT)
 
 import lib.game_dir_handling
+import lib.version_fetching
+
+import threading
 
 class Application(Gtk.Window):
     def __init__(self, gameDirectory):
@@ -17,6 +23,8 @@ class Application(Gtk.Window):
         self.localVersion = None
 
         self._createWidgets()
+
+        self._startLocalVersionFetcher()
 
     def _createWidgets(self):
         self.rootBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
@@ -58,6 +66,23 @@ class Application(Gtk.Window):
         version = self.localVersion if self.localVersion != None else ""
         self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_PREFIX + version)
 
+    def _startLocalVersionFetcher(self):
+        self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_CHECKING)
+        thread = threading.Thread(target=_fetchLocalVersion, args=(self.gameDirectory,self._localVersionFetcherCallback))
+        thread.daemon = True
+        thread.start()
+
+    def _localVersionFetcherCallback(self, version):
+        def gtkTask():
+            self.localVersion = version
+            if (version == None):
+                self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_CHECK_FAILED)
+            else:
+                self._updateLocalVersionLabel()
+                #if self.availableVersion != None:
+                #    self._updateAvailableVersionLabel()
+        GObject.idle_add(gtkTask)
+
     def onChangeGameDirectoryClicked(self, button):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
         if gameDirectory != None:
@@ -65,10 +90,13 @@ class Application(Gtk.Window):
             lib.game_dir_handling.saveGameDirectory(gameDirectory)
             print("Changed game directory to '%s'" % gameDirectory)
             self._updateGameDirectoryLabel()
-            #self.startLocalVersionFetcher()
+            self._startLocalVersionFetcher()
 
     def onQuitClicked(self, button):
         Gtk.main_quit()
+
+def _fetchLocalVersion(gameDirectory, callback):
+    callback(lib.version_fetching.getInstalledVersionId(gameDirectory))
 
 def init():
     pass
