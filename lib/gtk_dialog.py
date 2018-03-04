@@ -3,7 +3,8 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from gi.repository import GObject
 
-from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
+from lib.constants import (DOWNLOADS_PAGE,
+                           GAME_DIRECTORY_LABEL_PREFIX,
                            LOCAL_VERSION_LABEL_PREFIX,
                            LOCAL_VERSION_LABEL_CHECKING,
                            LOCAL_VERSION_LABEL_CHECK_FAILED,
@@ -12,6 +13,7 @@ from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
                            AVAILABLE_VERSION_LABEL_CHECK_FAILED,
                            QUIT_BUTTON_TEXT,
                            CHANGE_GAME_DIR_BUTTON_TEXT,
+                           OPEN_DOWNLOAD_PAGE_BUTTON_TEXT,
                            STATUS_SAME_POSTFIX,
                            STATUS_NEW_POSTFIX)
 
@@ -19,6 +21,7 @@ import lib.game_dir_handling
 import lib.version_fetching
 
 import threading
+import webbrowser
 
 class Application(Gtk.Window):
     def __init__(self, gameDirectory):
@@ -57,6 +60,7 @@ class Application(Gtk.Window):
 
         self._addButton(QUIT_BUTTON_TEXT, self.onQuitClicked)
         self._addButton(CHANGE_GAME_DIR_BUTTON_TEXT, self.onChangeGameDirectoryClicked)
+        self._addButton(OPEN_DOWNLOAD_PAGE_BUTTON_TEXT, self.onOpenDownloadsPageClicked)
 
         self.add(self.rootBox)
 
@@ -127,6 +131,9 @@ class Application(Gtk.Window):
             print("Changed game directory to '%s'" % gameDirectory)
             self._updateGameDirectoryLabel()
             self._startLocalVersionFetcher()
+
+    def onOpenDownloadsPageClicked(self, button):
+        webbrowser.open(DOWNLOADS_PAGE)
 
     def onQuitClicked(self, button):
         Gtk.main_quit()
