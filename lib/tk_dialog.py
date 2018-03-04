@@ -34,7 +34,6 @@ import webbrowser
 import os.path
 import platform
 
-WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
 GAME_DIRECTORY_LABEL_PREFIX = "Game Directory: "
 
