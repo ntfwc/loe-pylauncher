@@ -11,9 +11,12 @@ from lib.constants import (DOWNLOADS_PAGE,
                            AVAILABLE_VERSION_LABEL_PREFIX,
                            AVAILABLE_VERSION_LABEL_CHECKING,
                            AVAILABLE_VERSION_LABEL_CHECK_FAILED,
+                           LAUNCH_ERROR_TITLE,
+                           LAUNCH_ERROR_MESSAGE,
                            QUIT_BUTTON_TEXT,
                            CHANGE_GAME_DIR_BUTTON_TEXT,
                            OPEN_DOWNLOAD_PAGE_BUTTON_TEXT,
+                           LAUNCH_BUTTON_TEXT,
                            STATUS_SAME_POSTFIX,
                            STATUS_NEW_POSTFIX)
 
@@ -22,11 +25,13 @@ import lib.version_fetching
 
 import threading
 import webbrowser
+import os.path
 
 class Application(Gtk.Window):
     def __init__(self, gameDirectory):
         super().__init__()
         self.connect("delete-event", Gtk.main_quit)
+        self.executableToLaunch = None
         self.gameDirectory = gameDirectory
         self.localVersion = None
         self.availableVersion = None
@@ -61,6 +66,7 @@ class Application(Gtk.Window):
         self._addButton(QUIT_BUTTON_TEXT, self.onQuitClicked)
         self._addButton(CHANGE_GAME_DIR_BUTTON_TEXT, self.onChangeGameDirectoryClicked)
         self._addButton(OPEN_DOWNLOAD_PAGE_BUTTON_TEXT, self.onOpenDownloadsPageClicked)
+        self._addButton(LAUNCH_BUTTON_TEXT, self.onLaunchClicked)
 
         self.add(self.rootBox)
 
@@ -122,6 +128,14 @@ class Application(Gtk.Window):
             else:
                 self._updateAvailableVersionLabel()
         GObject.idle_add(gtkTask)
+
+    def onLaunchClicked(self, button):
+        executable = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
+        if os.path.exists(executable):
+            self.executableToLaunch = lib.game_paths.determineGameExecutablePath(self.gameDirectory)
+            Gtk.main_quit()
+        else:
+            displayError(LAUNCH_ERROR_TITLE, LAUNCH_ERROR_MESSAGE % executable)
 
     def onChangeGameDirectoryClicked(self, button):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
@@ -186,4 +200,5 @@ def runLauncherDialog(gameDirectory, title):
     app = Application(gameDirectory)
     app.show_all()
     Gtk.main()
-    return None
+    app.destroy()
+    return app.executableToLaunch
