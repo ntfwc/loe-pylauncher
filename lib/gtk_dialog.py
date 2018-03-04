@@ -23,10 +23,8 @@ class Application(Gtk.Window):
         self.labelBox.set_homogeneous(False)
         self.rootBox.pack_start(self.labelBox, True, True, 0)
 
-        self.gameDirectoryLabel =  Gtk.Label()
+        self.gameDirectoryLabel = self._addLabel()
         self._updateGameDirectoryLabel()
-        self.gameDirectoryLabel.set_justify(Gtk.Justification.LEFT)
-        self.labelBox.pack_start(self.gameDirectoryLabel, True, True, 0)
 
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.rootBox.pack_start(self.buttonBox, True, True, 0)
@@ -41,6 +39,12 @@ class Application(Gtk.Window):
         button.connect("clicked", command)
         self.buttonBox.pack_start(button, True, True, 0)
         return button
+
+    def _addLabel(self):
+        label =  Gtk.Label()
+        label.set_justify(Gtk.Justification.LEFT)
+        self.labelBox.pack_start(label, True, True, 0)
+        return label
 
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel.set_text(GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"')
