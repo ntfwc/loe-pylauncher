@@ -24,12 +24,15 @@ import lib.version_fetching
 from lib.constants import DOWNLOADS_PAGE
 
 import tkinter
+import tkinter.ttk
 import tkinter.filedialog
 import tkinter.messagebox
+
 import threading
 from queue import Queue
 import webbrowser
 import os.path
+import platform
 
 WINDOW_WIDTH = 200
 TASK_QUEUE_SIZE = 10
@@ -46,9 +49,9 @@ AVAILABLE_VERSION_LABEL_CHECK_FAILED = AVAILABLE_VERSION_LABEL_PREFIX + "Check F
 LAUNCH_ERROR_TITLE = "Launch Error"
 LAUNCH_ERROR_MESSAGE = "The expected launch executable '%s' was not found"
 
-class Application(tkinter.Frame):
+class Application(tkinter.ttk.Frame):
     def __init__(self, gameDirectory, master=None):
-        tkinter.Frame.__init__(self, master)
+        tkinter.ttk.Frame.__init__(self, master)
         self.pack()
         self.executableToLaunch = None
         self.gameDirectory = gameDirectory
@@ -64,22 +67,22 @@ class Application(tkinter.Frame):
         self.startAvailableVersionFetcher()
 
     def _createWidgets(self):
-        self.labelFrame = tkinter.Frame(self)
+        self.labelFrame = tkinter.ttk.Frame(self)
         self.labelFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
-        self.gameDirectoryLabel = tkinter.Label(self.labelFrame)
+        self.gameDirectoryLabel = tkinter.ttk.Label(self.labelFrame)
         self._updateGameDirectoryLabel()
         self.gameDirectoryLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
 
-        self.localVersionLabel = tkinter.Label(self.labelFrame)
+        self.localVersionLabel = tkinter.ttk.Label(self.labelFrame)
         self._updateLocalVersionLabel()
         self.localVersionLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
 
-        self.availableVersionLabel = tkinter.Label(self.labelFrame)
+        self.availableVersionLabel = tkinter.ttk.Label(self.labelFrame)
         self._updateAvailableVersionLabel()
         self.availableVersionLabel.pack(side=tkinter.TOP, anchor=tkinter.W)
 
-        self.buttonFrame = tkinter.Frame(self)
+        self.buttonFrame = tkinter.ttk.Frame(self)
         self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
         self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitClicked)
@@ -106,7 +109,7 @@ class Application(tkinter.Frame):
         self.availableVersionLabel["text"] = AVAILABLE_VERSION_LABEL_PREFIX + version + postfix
 
     def _addButton(self, frame, text, command):
-        button = tkinter.Button(frame)
+        button = tkinter.ttk.Button(frame)
         button["text"] = text
         button["command"] = command;
         button.pack(side=tkinter.LEFT, padx=2)
@@ -194,6 +197,9 @@ isRootHidden=True
 def init():
     global root
     root = tkinter.Tk()
+    if platform.system() == "Linux":
+        # The default theme for Linux is "classic", but we can do better
+        tkinter.ttk.Style().theme_use("clam")
     root.withdraw()
 
 def askUserForDirectory(title):
