@@ -30,7 +30,11 @@ from lib.constants import (DOWNLOADS_PAGE,
                            AVAILABLE_VERSION_LABEL_CHECKING,
                            AVAILABLE_VERSION_LABEL_CHECK_FAILED,
                            LAUNCH_ERROR_TITLE,
-                           LAUNCH_ERROR_MESSAGE)
+                           LAUNCH_ERROR_MESSAGE,
+                           QUIT_BUTTON_TEXT,
+                           CHANGE_GAME_DIR_BUTTON_TEXT,
+                           OPEN_DOWNLOAD_PAGE_BUTTON_TEXT,
+                           LAUNCH_BUTTON_TEXT)
 
 import tkinter
 import tkinter.ttk
@@ -81,10 +85,10 @@ class Application(tkinter.ttk.Frame):
         self.buttonFrame = tkinter.ttk.Frame(self)
         self.buttonFrame.pack(side=tkinter.TOP, padx=5, pady=5)
 
-        self.quitButton = self._addButton(self.buttonFrame, "Quit", self.onQuitClicked)
-        self.changeGameDirButton = self._addButton(self.buttonFrame, "Change game directory", self.onChangeGameDirectoryClicked)
-        self.openDownloadsPageButton = self._addButton(self.buttonFrame, "Open Downloads page", self.onOpenDownloadsPageClicked)
-        self.launchButton = self._addButton(self.buttonFrame, "Launch", self.onLaunchClicked)
+        self.quitButton = self._addButton(self.buttonFrame, QUIT_BUTTON_TEXT, self.onQuitClicked)
+        self.changeGameDirButton = self._addButton(self.buttonFrame, CHANGE_GAME_DIR_BUTTON_TEXT, self.onChangeGameDirectoryClicked)
+        self.openDownloadsPageButton = self._addButton(self.buttonFrame, OPEN_DOWNLOAD_PAGE_BUTTON_TEXT, self.onOpenDownloadsPageClicked)
+        self.launchButton = self._addButton(self.buttonFrame, LAUNCH_BUTTON_TEXT, self.onLaunchClicked)
 
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel["text"] = GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"'

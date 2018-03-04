@@ -32,3 +32,8 @@ AVAILABLE_VERSION_LABEL_CHECK_FAILED = AVAILABLE_VERSION_LABEL_PREFIX + "Check F
 
 LAUNCH_ERROR_TITLE = "Launch Error"
 LAUNCH_ERROR_MESSAGE = "The expected launch executable '%s' was not found"
+
+QUIT_BUTTON_TEXT = "Quit"
+CHANGE_GAME_DIR_BUTTON_TEXT = "Change game directory"
+OPEN_DOWNLOAD_PAGE_BUTTON_TEXT = "Open Downloads page"
+LAUNCH_BUTTON_TEXT = "Launch"
