@@ -3,6 +3,7 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
+                           LOCAL_VERSION_LABEL_PREFIX,
                            QUIT_BUTTON_TEXT,
                            CHANGE_GAME_DIR_BUTTON_TEXT)
 
@@ -13,6 +14,7 @@ class Application(Gtk.Window):
         super().__init__()
         self.connect("delete-event", Gtk.main_quit)
         self.gameDirectory = gameDirectory
+        self.localVersion = None
 
         self._createWidgets()
 
@@ -25,6 +27,9 @@ class Application(Gtk.Window):
 
         self.gameDirectoryLabel = self._addLabel()
         self._updateGameDirectoryLabel()
+
+        self.localVersionLabel = self._addLabel()
+        self._updateLocalVersionLabel()
 
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.rootBox.pack_start(self.buttonBox, True, True, 0)
@@ -48,6 +53,10 @@ class Application(Gtk.Window):
 
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel.set_text(GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"')
+
+    def _updateLocalVersionLabel(self):
+        version = self.localVersion if self.localVersion != None else ""
+        self.localVersionLabel.set_text(LOCAL_VERSION_LABEL_PREFIX + version)
 
     def onChangeGameDirectoryClicked(self, button):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
