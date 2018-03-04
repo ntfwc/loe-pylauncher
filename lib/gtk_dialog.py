@@ -8,6 +8,18 @@ class Application(Gtk.Window):
         self.connect("delete-event", Gtk.main_quit)
         self.gameDirectory = gameDirectory
 
+        self._createWidgets()
+
+    def _createWidgets(self):
+        self.labelBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
+        self.labelBox.set_homogeneous(False)
+
+        self.gameDirectoryLabel =  Gtk.Label("Some label")
+        self.gameDirectoryLabel.set_justify(Gtk.Justification.LEFT)
+        self.labelBox.pack_start(self.gameDirectoryLabel, True, True, 0)
+
+        self.add(self.labelBox)
+
 def init():
     pass
 
