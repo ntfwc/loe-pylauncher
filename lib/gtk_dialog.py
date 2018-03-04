@@ -2,6 +2,8 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
+from lib.constants import GAME_DIRECTORY_LABEL_PREFIX
+
 class Application(Gtk.Window):
     def __init__(self, gameDirectory):
         super().__init__()
@@ -17,7 +19,8 @@ class Application(Gtk.Window):
         self.labelBox.set_homogeneous(False)
         self.rootBox.pack_start(self.labelBox, True, True, 0)
 
-        self.gameDirectoryLabel =  Gtk.Label("Some label")
+        self.gameDirectoryLabel =  Gtk.Label()
+        self._updateGameDirectoryLabel()
         self.gameDirectoryLabel.set_justify(Gtk.Justification.LEFT)
         self.labelBox.pack_start(self.gameDirectoryLabel, True, True, 0)
 
@@ -33,6 +36,9 @@ class Application(Gtk.Window):
         button.connect("clicked", command)
         self.buttonBox.pack_start(button, True, True, 0)
         return button
+
+    def _updateGameDirectoryLabel(self):
+        self.gameDirectoryLabel.set_text(GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"')
 
     def onQuitClicked(self, button):
         Gtk.main_quit()
