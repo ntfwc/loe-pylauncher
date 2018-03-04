@@ -24,11 +24,15 @@ class Application(Gtk.Window):
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.rootBox.pack_start(self.buttonBox, True, True, 0)
 
-        self.quitButton = Gtk.Button.new_with_label("Quit")
-        self.quitButton.connect("clicked", self.onQuitClicked)
-        self.buttonBox.pack_start(self.quitButton, True, True, 0)
+        self._addButton("Quit", self.onQuitClicked)
 
         self.add(self.rootBox)
+
+    def _addButton(self, text, command):
+        button = Gtk.Button.new_with_label("Quit")
+        button.connect("clicked", command)
+        self.buttonBox.pack_start(button, True, True, 0)
+        return button
 
     def onQuitClicked(self, button):
         Gtk.main_quit()
