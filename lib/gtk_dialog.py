@@ -2,7 +2,11 @@ import gi
 gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
-from lib.constants import GAME_DIRECTORY_LABEL_PREFIX
+from lib.constants import (GAME_DIRECTORY_LABEL_PREFIX,
+                           QUIT_BUTTON_TEXT,
+                           CHANGE_GAME_DIR_BUTTON_TEXT)
+
+import lib.game_dir_handling
 
 class Application(Gtk.Window):
     def __init__(self, gameDirectory):
@@ -27,18 +31,28 @@ class Application(Gtk.Window):
         self.buttonBox = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
         self.rootBox.pack_start(self.buttonBox, True, True, 0)
 
-        self._addButton("Quit", self.onQuitClicked)
+        self._addButton(QUIT_BUTTON_TEXT, self.onQuitClicked)
+        self._addButton(CHANGE_GAME_DIR_BUTTON_TEXT, self.onChangeGameDirectoryClicked)
 
         self.add(self.rootBox)
 
     def _addButton(self, text, command):
-        button = Gtk.Button.new_with_label("Quit")
+        button = Gtk.Button.new_with_label(text)
         button.connect("clicked", command)
         self.buttonBox.pack_start(button, True, True, 0)
         return button
 
     def _updateGameDirectoryLabel(self):
         self.gameDirectoryLabel.set_text(GAME_DIRECTORY_LABEL_PREFIX + '"' + self.gameDirectory + '"')
+
+    def onChangeGameDirectoryClicked(self, button):
+        gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
+        if gameDirectory != None:
+            self.gameDirectory = gameDirectory
+            lib.game_dir_handling.saveGameDirectory(gameDirectory)
+            print("Changed game directory to '%s'" % gameDirectory)
+            self._updateGameDirectoryLabel()
+            #self.startLocalVersionFetcher()
 
     def onQuitClicked(self, button):
         Gtk.main_quit()
