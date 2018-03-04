@@ -31,6 +31,7 @@ class Application(Gtk.Window):
         self._createWidgets()
 
         self._startLocalVersionFetcher()
+        self._startAvailableVersionFetcher()
 
     def _createWidgets(self):
         self.rootBox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=5)
@@ -103,6 +104,21 @@ class Application(Gtk.Window):
                     self._updateAvailableVersionLabel()
         GObject.idle_add(gtkTask)
 
+    def _startAvailableVersionFetcher(self):
+        self.availableVersionLabel.set_text(AVAILABLE_VERSION_LABEL_CHECKING)
+        thread = threading.Thread(target=_fetchAvailableVersion, args=(self._availableVersionFetcherCallback,))
+        thread.daemon = True
+        thread.start()
+
+    def _availableVersionFetcherCallback(self, version):
+        def gtkTask():
+            self.availableVersion = version
+            if (version == None):
+                self.availableVersionLabel.set_text(AVAILABLE_VERSION_LABEL_CHECK_FAILED)
+            else:
+                self._updateAvailableVersionLabel()
+        GObject.idle_add(gtkTask)
+
     def onChangeGameDirectoryClicked(self, button):
         gameDirectory = lib.game_dir_handling.askUserForGameDirectory()
         if gameDirectory != None:
@@ -117,6 +133,9 @@ class Application(Gtk.Window):
 
 def _fetchLocalVersion(gameDirectory, callback):
     callback(lib.version_fetching.getInstalledVersionId(gameDirectory))
+
+def _fetchAvailableVersion(callback):
+    callback(lib.version_fetching.fetchAvailableVersionId())
 
 def init():
     pass
